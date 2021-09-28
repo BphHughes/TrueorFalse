@@ -1,0 +1,175 @@
+using System;
+
+namespace TrueOrFalse
+{
+  class Program
+  {
+		static void Main(string[] args)
+    {
+      // Do not edit these lines
+      Console.WriteLine("Welcome to 'True or False?'\nPress Enter to begin:");
+      string entry = Console.ReadLine();
+      Tools.SetUpInputStream(entry);
+
+      Console.WriteLine("Pick what type of quiz you would like to take: Geography, History, or General Knowledge:");
+
+      
+
+
+string[] quiz = new string[5];
+bool[] responses = new bool[5];
+string[] fullanswers = new string[5];
+
+int index = 0;
+while (index == 0)
+{
+string type = Console.ReadLine();
+type.ToLower();
+
+switch (type) //user chooses what type of quiz they would like and the switch provides the questions, responses, and answers.
+{
+  case "geography": case "geog": case "geo":
+  Console.WriteLine("\nYou chose Geography.");
+  string[] geoquiz = new string[] {"Brasília is the capital city of Brazil.", "Japan has the world's highest life expectancy.", "Madrid is more easterly than London.", "The world's tallest waterfall is in Venezuela.", "China borders the same number of countries as Russia."};
+  bool[] georesponses = new bool[] {true, false, false, true, true};
+  string[] geoFullAnswers = new string[] {"True. Brasília was officially inaugurated as the capital of Brazil in 1960.", "False. Monaco has the highest life expectancy of 89.73, followed by San Marino (83.01), Andorra (82.43) then Japan (82.25).", "False. Madrid is at a longitude of 3°43′W. London has a longitude of 0°7′W.", "True. Angel Falls in Venezuela is 979m.", "True. Both Russia and China border 14 countires."};
+  geoquiz.CopyTo(quiz, 0);
+  georesponses.CopyTo(responses, 0);  
+  geoFullAnswers.CopyTo(fullanswers, 0);
+  index++;
+  break;
+
+  case "history": case "hist": case "h":
+  Console.WriteLine("\nYou chose History.");
+  string[] histQuiz = new string[] {"The Iron Age comes after the Bronze Age.", "The White House was built before Big Ben.", "Blackbeard had a wooden leg.", "Cleopatra had a child with Julius Caesar.", "Henry VIII wife Anne Boleyn was executed."};
+  bool[] histAnswers = new bool[] {true, true, false, true, true};
+  string[] histFullAnswers = new string[] {"True. The Iron Age follows the Bronze Age.", "True. The White House was built between 1792 and 1800. Big Ben was completed in 1858.", "False. Blackbeard had two healthy legs, and presumably a fine darkly-colored beard.", "Julius Caesar and Cleopatra had a son called Caesarion who ruled Egypt with his Mother.", "True. Anne Boleyn was executed on May 19th, 1536."};
+  histQuiz.CopyTo(quiz, 0);
+  histAnswers.CopyTo(responses, 0);  
+  histFullAnswers.CopyTo(fullanswers, 0);
+  index++;
+  break;
+
+  case "general": case "general knowledge": case "gen":
+  Console.WriteLine("\nYou chose General Knowledge.");
+  string[] genQuiz = new string[] {"Brazil is the only country in the Americas to have the official language of Portuguese.", "A metre is further than a yard.", "The Channel Tunnel is the longest rail tunnel in the world.", "The highest mountain in England is Ben Nevis.", "Fruit flies were the first living creatures sent into space."};
+  bool[] genAnswers = new bool[] {true, false, false, false, true};
+  string[] genFullAnswers = new string[] {"True. Brazil is the only country in the Americas to have the official language of Portuguese.", "False. 1 metre is the same as 1.09361 yards.", "False. The Gotthard Base Tunnel in Switzerland is 4 miles longer than the Channel Tunnel at 35.5 miles.", "False. Ben Nevis is the tallest mountain in SCOTLAND at 1345m. The tallest mountain in England is Scafell Pike which measure 978m.", "True. Fruit flies were sent into space in a V-2 rocket in 1947 which was 10 years before Laika the dog made the trip in 1957."};
+  genQuiz.CopyTo(quiz, 0);
+  genAnswers.CopyTo(responses, 0);  
+  genFullAnswers.CopyTo(fullanswers, 0);
+index++;
+break;
+
+default:
+Console.WriteLine("\nI'm sorry that didn't make no sense. Say that again?");
+break;
+
+}//end of switch
+}//end of while loop
+
+RunQuiz(quiz, responses, fullanswers);
+   
+    }//main end
+
+
+
+public static void RunQuiz(string[] questions, bool[] answers, string[] fullanswers)
+{
+Console.WriteLine("\nGood luck! Here is the first question... ");
+bool[] responses = new bool[5];
+
+if (responses.Length != answers.Length)
+{
+  Console.WriteLine("Warning Issued.");
+}
+
+int askingIndex = 0;
+foreach (string question in questions)
+{
+  string input;
+  bool isBool;
+  bool inputBool;
+  Console.WriteLine();
+  Console.WriteLine(question);
+  Console.WriteLine("True or False?");
+  input = Console.ReadLine();
+   //question posed and answer accepted as string input
+  isBool = Boolean.TryParse(input, out inputBool);
+  //returns isBool to check if answer could be turned into a bool and inputBool is assigned as the answer bool
+
+  int numberoffalsestarts = 1;
+  while (isBool != true)
+  { //checks if user has correctly input either true or false 
+  
+     if (numberoffalsestarts == 1)
+      {
+        Console.WriteLine(question);
+        numberoffalsestarts++;
+        //only shows the question if this is the first time the user has mispelt their answer
+      }
+     else
+      {
+   Console.WriteLine("Please respond with 'true' or 'false'.");
+   string input2 = Console.ReadLine();
+   isBool = Boolean.TryParse(input2, out inputBool);
+       }
+  }
+  responses[askingIndex] = inputBool;
+  askingIndex++; 
+  //fills empty array with users responses
+}
+
+int scoringIndex = 0;
+int score = 0;
+
+foreach (bool answer in answers)
+{
+  if (responses[scoringIndex] == answers[scoringIndex])
+  {
+    score ++; //correct answers increase score by 1
+  }
+scoringIndex++;
+}
+
+Console.WriteLine($"\nYou final score is {score} out of 5! Well done");
+Console.WriteLine("\nWould you like to see the answers?");
+
+int number = 1;
+int index2 = 0;
+while (index2 == 0)
+{
+Console.Write("Yes or No: ");
+string yesorno = Console.ReadLine();
+yesorno.ToLower();
+
+  if (yesorno == "yes")
+  {
+     foreach (string answer in fullanswers)
+    {//Shows full answers to the user from fullanswers array
+      Console.WriteLine($"\n - Question {number}.");
+      Console.WriteLine(answer);
+      number++;
+    }
+  index2++;
+  Console.WriteLine("\nThank you, have a nice day.");
+  }
+  else if (yesorno == "no")
+  {
+    Console.WriteLine("\nOK, well have a nice day.");
+    index2++;
+  }
+  else
+  {
+    Console.WriteLine("\nOne more time, dear? I'm getting old and am hard of hearing. SPEAK CLEARLY FOR YOUR GRANDMOTHER.");
+  }
+}//end of yesorno while loop
+
+
+//Final score and end of quiz
+}//end of Runquiz()
+
+
+
+  }
+}
